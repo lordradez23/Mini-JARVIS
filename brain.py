@@ -43,8 +43,69 @@ else:
     chat = None
     model = None
 
+def _local_classify(query):
+    """
+    Fast offline keyword pre-classifier. Handles simple, deterministic intents
+    locally so they always work — even when the Gemini API is unavailable.
+    Returns a classified dict or None if the intent is ambiguous.
+    """
+    q = query.lower().strip()
+
+    # ── Time & Date ───────────────────────────────────────────────
+    if any(p in q for p in ["what time", "current time", "what's the time",
+                             "whats the time", "tell me the time", "the time"]):
+        return {"intent": "TIME"}
+
+    if any(p in q for p in ["what day", "what date", "today's date", "todays date",
+                             "what is today", "current date", "day is it"]):
+        return {"intent": "DATE"}
+
+    # ── Hardware ──────────────────────────────────────────────────
+    if any(p in q for p in ["cpu", "ram", "battery", "memory usage",
+                             "hardware", "how's my system", "system stats"]):
+        return {"intent": "HARDWARE"}
+
+    # ── Screenshot ────────────────────────────────────────────────
+    if any(p in q for p in ["screenshot", "screen shot", "capture screen", "take a picture of screen"]):
+        return {"intent": "SCREENSHOT"}
+
+    # ── Volume ────────────────────────────────────────────────────
+    if any(p in q for p in ["volume up", "volume down", "increase volume",
+                             "decrease volume", "mute", "unmute", "louder", "quieter"]):
+        return {"intent": "VOLUME"}
+
+    # ── System Power ──────────────────────────────────────────────
+    if any(p in q for p in ["shutdown", "shut down", "restart", "reboot", "sleep mode", "hibernate"]):
+        return {"intent": "SYSTEM"}
+
+    # ── Exit ──────────────────────────────────────────────────────
+    if any(p in q for p in ["exit", "quit", "goodbye", "shut up", "be quiet",
+                             "go to sleep", "stop jarvis", "power off jarvis"]):
+        return {"intent": "SHUT_UP"}
+
+    # ── Mini Games ────────────────────────────────────────────────
+    if any(p in q for p in ["flip a coin", "flip coin", "roll a dice",
+                             "roll dice", "rock paper scissors"]):
+        if "coin" in q or "flip" in q:
+            return {"intent": "MINI_GAME", "parameter": "coin"}
+        if "dice" in q or "roll" in q:
+            return {"intent": "MINI_GAME", "parameter": "dice"}
+        return {"intent": "MINI_GAME", "parameter": "rps"}
+
+    return None  # Let Gemini handle anything ambiguous
+
+
 def classify_intent(query):
-    """Uses Gemini to classify the user's intent into a structured format."""
+    """
+    Classifies the user's intent. First tries local keyword matching for
+    simple, API-independent commands. Falls back to Gemini for complex queries.
+    """
+    # Always try local classification first — no API needed, never fails
+    local = _local_classify(query)
+    if local:
+        print(f"DEBUG: Local pre-classifier resolved intent: {local}")
+        return local
+
     if not model:
         return {"intent": "CONVERSATION"}
 
@@ -75,12 +136,11 @@ def classify_intent(query):
     Example: {{"intent": "ALARM", "parameter": "10 minutes"}}
     Example: {{"intent": "WEATHER_API", "parameter": "London"}}
     Example: {{"intent": "MINI_GAME", "parameter": "rock paper scissors"}}
-    
+
     Query: "{query}"
     """
-    
+
     try:
-        # Use simple generate_content for classification to avoid history bloat
         classification_response = model.generate_content(prompt)
         import json
         import re
@@ -89,7 +149,7 @@ def classify_intent(query):
             return json.loads(match.group())
     except Exception as e:
         print(f"Classification Neural Link Error: Service might be restricted or blocked. {e}")
-    
+
     return {"intent": "CONVERSATION"}
 
 def get_ai_response(query):
