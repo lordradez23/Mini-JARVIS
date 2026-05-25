@@ -42,36 +42,49 @@ def speak(text):
     except Exception as e:
         print(f"TTS Error: {e}")
 
+import speech_recognition as sr
+
 def listen():
     """
-    Text-input mode: accepts commands from either:
-      1. The terminal (type and press Enter)
+    Accepts commands from either:
+      1. Microphone (using SpeechRecognition)
       2. The HUD browser UI (submitted via the /input endpoint)
-    Runs a background thread waiting for terminal input while polling
+    Runs a background thread waiting for voice input while polling
     for HUD input simultaneously.
     """
     report_state("listening", "Awaiting your command, master...")
     print("\n" + "─" * 50)
-    print("  ⌨  TYPE YOUR COMMAND (or use the HUD browser):")
+    print("  🎤  LISTENING (Speak now, or use the HUD browser) ...")
     print("─" * 50)
 
-    terminal_result = [None]
+    query_result = [None]
     done = threading.Event()
 
-    def terminal_thread():
+    def mic_thread():
+        recognizer = sr.Recognizer()
         try:
-            text = input("  > ").strip()
-            if text:
-                terminal_result[0] = text
-        except (EOFError, KeyboardInterrupt):
-            pass
+            with sr.Microphone() as source:
+                recognizer.adjust_for_ambient_noise(source, duration=0.5)
+                # Listen for speech
+                audio = recognizer.listen(source, timeout=8, phrase_time_limit=15)
+                text = recognizer.recognize_google(audio)
+                if text:
+                    query_result[0] = text
+        except sr.WaitTimeoutError:
+            pass # No speech detected
+        except sr.UnknownValueError:
+            print("  [Mic] Could not understand audio")
+        except sr.RequestError as e:
+            print(f"  [Mic] Service error: {e}")
+        except Exception as e:
+            print(f"  [Mic] Microphone error: {e}")
         finally:
             done.set()
 
-    t = threading.Thread(target=terminal_thread, daemon=True)
+    t = threading.Thread(target=mic_thread, daemon=True)
     t.start()
 
-    # Poll every 100ms for either terminal input or HUD input
+    # Poll every 100ms for either microphone input or HUD input
     while not done.is_set():
         with _hud_input_lock:
             if _hud_input_queue:
@@ -82,7 +95,8 @@ def listen():
                 return query.lower()
         done.wait(timeout=0.1)
 
-    query = terminal_result[0]
+    # Check if we got something from the microphone
+    query = query_result[0]
     if not query:
         report_state("idle", "No input received.")
         return "none"
@@ -90,3 +104,4 @@ def listen():
     print(f"\n  Master said: {query}")
     report_state("recognizing", f"Processing: {query}")
     return query.lower()
+
