@@ -180,15 +180,88 @@ def main():
             # 7. Exit/Stop
             elif intent == "SHUT_UP" or any(word in query for word in ["exit", "quit", "stop", "goodbye", "go to sleep", "shut up", "be quiet"]):
                 variations = [
-                    "Goodbye master. I'll be here if you need me.", 
-                    "Shutting down. Have a pleasant evening, sir.", 
+                    "Goodbye master. I'll be here if you need me.",
+                    "Shutting down. Have a pleasant evening, sir.",
                     "All systems offline. Farewell.",
                     "As you wish, sir. Silencing all protocols.",
                     "Understood, master. I shall remain silent."
                 ]
                 engine.speak(random.choice(variations))
                 break
-            
+
+            # ── Web ──────────────────────────────────────────────────
+            elif intent == "WEB_YOUTUBE":
+                engine.speak(actions.open_youtube(parameter))
+
+            elif intent == "WEB_SEARCH":
+                engine.speak(actions.search_google(parameter or query))
+
+            elif intent == "WEB_OPEN":
+                engine.speak(actions.open_url(parameter or query))
+
+            # ── Files ─────────────────────────────────────────────────
+            elif intent == "FILE_CREATE":
+                name = parameter.strip() or "jarvis_new_file"
+                engine.speak(actions.create_text_file(name))
+
+            elif intent == "FILE_OPEN_FOLDER":
+                engine.speak(actions.open_folder(parameter))
+
+            elif intent == "FILE_READ_NOTES":
+                content = actions.read_notes()
+                engine.speak(content)
+
+            elif intent == "FILE_LIST_DESKTOP":
+                engine.speak(actions.list_desktop_files())
+
+            # ── Clipboard ─────────────────────────────────────────────
+            elif intent == "CLIPBOARD_COPY":
+                if parameter:
+                    engine.speak(actions.copy_to_clipboard(parameter))
+                else:
+                    engine.speak("What would you like me to copy, master?")
+
+            elif intent == "CLIPBOARD_READ":
+                engine.speak(actions.get_clipboard())
+
+            # ── Media ─────────────────────────────────────────────────
+            elif intent == "MEDIA_SPOTIFY":
+                engine.speak(actions.open_spotify())
+
+            elif intent == "MEDIA_CONTROL":
+                engine.speak(actions.media_control(parameter or query))
+
+            # ── Productivity ──────────────────────────────────────────
+            elif intent == "PRODUCTIVITY_POMODORO":
+                mins = parameter if parameter else "25"
+                engine.speak(actions.start_pomodoro(mins))
+
+            elif intent == "PRODUCTIVITY_TODO_ADD":
+                if parameter:
+                    engine.speak(actions.add_todo(parameter))
+                else:
+                    engine.speak("What would you like to add to your to-do list, master?")
+
+            elif intent == "PRODUCTIVITY_TODO_READ":
+                engine.speak(actions.read_todos())
+
+            elif intent == "PRODUCTIVITY_TODO_CLEAR":
+                engine.speak(actions.clear_todos())
+
+            # ── System Info ───────────────────────────────────────────
+            elif intent == "SYSTEM_DISK":
+                engine.speak(actions.check_disk_space())
+
+            elif intent == "SYSTEM_PROCESSES":
+                engine.speak(actions.list_running_processes())
+
+            elif intent == "SYSTEM_NETWORK":
+                engine.speak(actions.get_network_status())
+
+            # ── Messaging ─────────────────────────────────────────────
+            elif intent == "MESSAGING_EMAIL":
+                engine.speak(actions.draft_email(to=parameter))
+
             # 8. Conversational Response (The Soul of JARVIS)
             else:
                 response = brain.get_ai_response(query)
@@ -197,6 +270,7 @@ def main():
         except Exception as e:
             print(f"CRITICAL ERROR IN MAIN LOOP: {e}")
             engine.speak("I seem to have encountered a critical error processing that request, sir. Shall we try again?")
+
 
 if __name__ == "__main__":
     main()

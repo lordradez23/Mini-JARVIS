@@ -2,7 +2,6 @@ google-generativeai
 python-dotenv
 requests
 psutil
-webbrowser
 wikipedia
 pyttsx3
 SpeechRecognition
@@ -13,3 +12,4 @@ scipy
 Flask
 pyautogui
 winsound
+pyperclip
