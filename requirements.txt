@@ -1,0 +1,15 @@
+google-generativeai
+python-dotenv
+requests
+psutil
+webbrowser
+wikipedia
+pyttsx3
+SpeechRecognition
+PyAudio
+sounddevice
+numpy
+scipy
+Flask
+pyautogui
+winsound

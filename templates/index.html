@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jarvis HUD</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        /* Command Input Bar */
+        #command-bar {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: min(700px, 90vw);
+            z-index: 100;
+        }
+        #command-input {
+            flex: 1;
+            background: rgba(0, 170, 255, 0.08);
+            border: 1px solid rgba(0, 200, 255, 0.4);
+            border-radius: 8px;
+            color: #00e5ff;
+            font-family: 'Orbitron', 'Courier New', monospace;
+            font-size: 15px;
+            padding: 12px 18px;
+            outline: none;
+            letter-spacing: 1px;
+            transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+            backdrop-filter: blur(8px);
+        }
+        #command-input::placeholder { color: rgba(0, 200, 255, 0.35); }
+        #command-input:focus {
+            border-color: #00e5ff;
+            background: rgba(0, 170, 255, 0.14);
+            box-shadow: 0 0 18px rgba(0, 229, 255, 0.3);
+        }
+        #command-submit {
+            background: rgba(0, 200, 255, 0.15);
+            border: 1px solid rgba(0, 200, 255, 0.5);
+            border-radius: 8px;
+            color: #00e5ff;
+            cursor: pointer;
+            font-family: 'Orbitron', 'Courier New', monospace;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            padding: 12px 22px;
+            text-transform: uppercase;
+            transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+            backdrop-filter: blur(8px);
+        }
+        #command-submit:hover {
+            background: rgba(0, 200, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+            transform: scale(1.04);
+        }
+        #command-submit:active { transform: scale(0.97); }
+        #cmd-feedback {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Orbitron', 'Courier New', monospace;
+            font-size: 12px;
+            color: #00e5ff;
+            letter-spacing: 2px;
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="hud-container">
+        <canvas id="particles"></canvas>
+        <div class="scanline"></div>
+        <div id="overlay">
+            <!-- Background Rings -->
+            <div class="ring-system">
+                <div class="ring outer"></div>
+                <div class="ring middle"></div>
+                <div class="ring inner"></div>
+                <div id="glow-ring"></div>
+            </div>
+
+            <!-- Central Status -->
+            <div id="status-panel">
+                <h1 id="status-text">SYSTEM: IDLE</h1>
+                <p id="core-temp">CORE TEMP: 32°C</p>
+            </div>
+
+            <!-- Side Panels (Glassmorphism) -->
+            <div class="panel left-panel">
+                <h3>SYSTEM STATS</h3>
+                <div id="cpu-stat">CPU: 0%</div>
+                <div id="ram-stat">RAM: 0%</div>
+            </div>
+
+            <div class="panel right-panel">
+                <h3>ENVIRONMENT</h3>
+                <div id="weather-stat">FETCHING...</div>
+                <div id="time-stat">00:00:00</div>
+            </div>
+
+            <!-- Bottom Transcript -->
+            <div id="transcript-panel">
+                <div class="transcript-header">NEURAL LINK TRANSCRIPT</div>
+                <p id="transcript-text">Awaiting input...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Command Input Bar -->
+    <div id="cmd-feedback">⚡ COMMAND TRANSMITTED</div>
+    <div id="command-bar">
+        <input id="command-input" type="text" placeholder="Enter command, master..." autocomplete="off" spellcheck="false" />
+        <button id="command-submit">SEND</button>
+    </div>
+
+    <script src="/static/particles.js"></script>
+    <script src="/static/hud.js"></script>
+    <script>
+        const input = document.getElementById('command-input');
+        const btn   = document.getElementById('command-submit');
+        const feedback = document.getElementById('cmd-feedback');
+
+        async function sendCommand() {
+            const text = input.value.trim();
+            if (!text) return;
+            input.value = '';
+            try {
+                await fetch('/input', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ command: text })
+                });
+                // Flash feedback
+                feedback.style.opacity = '1';
+                setTimeout(() => feedback.style.opacity = '0', 1800);
+            } catch(e) {
+                console.error('Failed to send command:', e);
+            }
+        }
+
+        btn.addEventListener('click', sendCommand);
+        input.addEventListener('keydown', e => {
+            if (e.key === 'Enter') sendCommand();
+        });
+    </script>
+</body>
+</html>
+

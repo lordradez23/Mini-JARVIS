@@ -1,0 +1,28 @@
+# Environment & secrets
+.env
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Screenshots saved by Jarvis
+screenshot_*.png
+
+# VS Code settings
+.vscode/
+
+# Diagnostic / test files
+diag_output.txt
+diagnostic_test.wav
+model_list.txt
+
+# Byte-compiled / optimized
+*.spec
+dist/
+build/
