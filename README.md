@@ -1,4 +1,4 @@
-# 🤖 Mini JARVIS
+# Mini JARVIS
 ### *Just A Rather Very Intelligent System*
 
 > *"All systems are online. My neural links are synchronized and I am ready to assist."*
@@ -7,7 +7,7 @@ A Python-powered AI assistant inspired by the MCU's JARVIS, featuring a real-tim
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Overview](#overview)
 - [Features](#features)
@@ -30,11 +30,11 @@ A Python-powered AI assistant inspired by the MCU's JARVIS, featuring a real-tim
 
 Mini JARVIS is a desktop AI assistant that combines:
 
-- 🧠 **Google Gemini 2.0 Flash** for natural language understanding and conversational AI
-- 🔊 **pyttsx3 Text-to-Speech** for spoken responses delivered in a calm, masculine voice
-- 🎯 **Intelligent Intent Routing** — Gemini classifies each command into one of 16 action categories
-- 🖥️ **Live HUD Dashboard** — A sci-fi browser interface showing system stats, live status, and a command input bar
-- ⌨️ **Text Input Mode** — Commands accepted via terminal prompt or the HUD browser UI
+- **Google Gemini 2.0 Flash** for natural language understanding and conversational AI
+- **pyttsx3 Text-to-Speech** for spoken responses delivered in a calm, masculine voice
+- **Intelligent Intent Routing** — Gemini classifies each command into one of 16 action categories
+- **Live HUD Dashboard** — A sci-fi browser interface showing system stats, live status, and a command input bar
+- **Text Input Mode** — Commands accepted via terminal prompt or the HUD browser UI
 
 ---
 
@@ -42,19 +42,19 @@ Mini JARVIS is a desktop AI assistant that combines:
 
 | Category | Capability |
 |---|---|
-| 🕐 **Time & Date** | Current time, today's date |
-| 🌐 **Knowledge** | Wikipedia search and summaries |
-| 📱 **App Control** | Open/close Notepad, Calculator, Spotify, Browser, etc. |
-| 📸 **System Tools** | Screenshots, volume control, hardware stats |
-| ⚙️ **System Power** | Shutdown, restart, sleep |
-| 📰 **News** | Latest headlines |
-| 📝 **Notes** | Save notes to a local file |
-| 🧮 **Math & Conversions** | Arithmetic calculations and unit conversions |
-| ⏰ **Alarms** | Timed alarms with audio beep |
-| 🌤️ **Weather** | Real-time weather by city/location |
-| 🎮 **Mini Games** | Rock-Paper-Scissors, coin flip, dice roll |
-| 💬 **Conversation** | Full conversational AI with JARVIS personality |
-| 🖥️ **Live HUD** | Real-time CPU, RAM, temp, clock, status display |
+| **Time & Date** | Current time, today's date |
+| **Knowledge** | Wikipedia search and summaries |
+| **App Control** | Open/close Notepad, Calculator, Spotify, Browser, etc. |
+| **System Tools** | Screenshots, volume control, hardware stats |
+| **System Power** | Shutdown, restart, sleep |
+| **News** | Latest headlines |
+| **Notes** | Save notes to a local file |
+| **Math & Conversions** | Arithmetic calculations and unit conversions |
+| **Alarms** | Timed alarms with audio beep |
+| **Weather** | Real-time weather by city/location |
+| **Mini Games** | Rock-Paper-Scissors, coin flip, dice roll |
+| **Conversation** | Full conversational AI with JARVIS personality |
+| **Live HUD** | Real-time CPU, RAM, temp, clock, status display |
 
 ---
 
@@ -162,7 +162,7 @@ Create a `.env` file in the project root (already present if cloned):
 GEMINI_API_KEY=your_google_gemini_api_key_here
 ```
 
-> ⚠️ **Never commit your `.env` file to version control.** Add it to `.gitignore`.
+> **Never commit your `.env` file to version control.** Add it to `.gitignore`.
 
 To get a free Gemini API key:
 1. Visit [Google AI Studio](https://aistudio.google.com/app/apikey)
@@ -200,7 +200,7 @@ Jarvis runs in **Text Input Mode** — no microphone required.
 When the script is running in an interactive terminal, a prompt appears:
 ```
 ──────────────────────────────────────────────────
-  ⌨  TYPE YOUR COMMAND (or use the HUD browser):
+  TYPE YOUR COMMAND (or use the HUD browser):
 ──────────────────────────────────────────────────
   > what's the time?
 ```
@@ -213,7 +213,7 @@ http://127.0.0.1:5000
 ```
 A sci-fi HUD dashboard will appear. Use the **command input bar at the bottom** of the screen — type your command and press **Enter** or click **SEND**.
 
-> ✅ Jarvis will always **speak the response aloud** via TTS, regardless of which input method you use.
+> Jarvis will always **speak the response aloud** via TTS, regardless of which input method you use.
 
 ---
 
@@ -365,7 +365,7 @@ pip install -r requirements.txt
 
 ## License
 
-This project is for personal use and educational purposes. Inspired by Marvel's Iron Man JARVIS — built with 💙 and caffeine.
+This project is for personal use and educational purposes. Inspired by Marvel's Iron Man JARVIS — built with passion and caffeine.
 
 ---
 
