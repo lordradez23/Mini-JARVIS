@@ -16,7 +16,7 @@ def open_app(app_name):
     app_cmd = apps.get(app_name.lower())
     if app_cmd:
         os.system(app_cmd)
-        return f"Opening {app_name} for you, master."
+        return f"Opening {app_name} for you, Anointed."
     return f"I don't have a shortcut for {app_name} yet."
 
 def close_app(app_name):

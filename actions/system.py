@@ -56,7 +56,7 @@ def set_alarm(time_string):
         
         def alarm_thread():
             time.sleep(seconds)
-            speak(f"Master, your alarm for {minutes} minutes is ringing.")
+            speak(f"Anointed, your alarm for {minutes} minutes is ringing.")
             for _ in range(3):
                 winsound.Beep(1000, 500)
                 time.sleep(0.5)
@@ -70,7 +70,7 @@ def set_alarm(time_string):
         
         def alarm_thread():
             time.sleep(seconds)
-            speak(f"Master, your alarm for {seconds} seconds is ringing.")
+            speak(f"Anointed, your alarm for {seconds} seconds is ringing.")
             for _ in range(3):
                 winsound.Beep(1000, 500)
                 time.sleep(0.5)

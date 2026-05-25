@@ -44,11 +44,11 @@ def main():
     # 1. Situational Greeting
     hour = datetime.datetime.now().hour
     if 6 <= hour < 12:
-        greeting = "Good morning master."
+        greeting = "Good morning Anointed."
     elif 12 <= hour < 18:
-        greeting = "Good afternoon master."
+        greeting = "Good afternoon Anointed."
     else:
-        greeting = "Good evening master."
+        greeting = "Good evening Anointed."
     
     engine.speak(f"Initializing Jarvis... {greeting}")
     engine.speak("All systems are online. My neural links are synchronized and I am ready to assist.")
@@ -116,13 +116,13 @@ def main():
                 engine.speak(stats)
 
             elif intent == "NEWS":
-                engine.speak("Fetching the latest headlines for you, master.")
+                engine.speak("Fetching the latest headlines for you, Anointed.")
                 headlines = actions.get_news()
                 engine.speak(headlines)
 
             elif intent == "SYSTEM":
                 if "shutdown" in query:
-                    engine.speak("Initiating system shutdown. Goodbye master.")
+                    engine.speak("Initiating system shutdown. Goodbye Anointed.")
                     actions.system_state("shutdown")
                 elif "restart" in query:
                     engine.speak("Restarting all systems.")
@@ -171,7 +171,7 @@ def main():
                         choice = "rock" if "rock" in user_choice else "paper" if "paper" in user_choice else "scissors"
                         msg = actions.play_mini_game("rps", choice)
                     else:
-                        msg = "I couldn't understand your choice, master."
+                        msg = "I couldn't understand your choice, Anointed."
                 else:
                     msg = actions.play_mini_game(game_type)
                     
@@ -180,11 +180,11 @@ def main():
             # 7. Exit/Stop
             elif intent == "SHUT_UP" or any(word in query for word in ["exit", "quit", "stop", "goodbye", "go to sleep", "shut up", "be quiet"]):
                 variations = [
-                    "Goodbye master. I'll be here if you need me.",
+                    "Goodbye Anointed. I'll be here if you need me.",
                     "Shutting down. Have a pleasant evening, sir.",
                     "All systems offline. Farewell.",
                     "As you wish, sir. Silencing all protocols.",
-                    "Understood, master. I shall remain silent."
+                    "Understood, Anointed. I shall remain silent."
                 ]
                 engine.speak(random.choice(variations))
                 break
@@ -219,7 +219,7 @@ def main():
                 if parameter:
                     engine.speak(actions.copy_to_clipboard(parameter))
                 else:
-                    engine.speak("What would you like me to copy, master?")
+                    engine.speak("What would you like me to copy, Anointed?")
 
             elif intent == "CLIPBOARD_READ":
                 engine.speak(actions.get_clipboard())
@@ -240,7 +240,7 @@ def main():
                 if parameter:
                     engine.speak(actions.add_todo(parameter))
                 else:
-                    engine.speak("What would you like to add to your to-do list, master?")
+                    engine.speak("What would you like to add to your to-do list, Anointed?")
 
             elif intent == "PRODUCTIVITY_TODO_READ":
                 engine.speak(actions.read_todos())

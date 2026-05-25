@@ -22,7 +22,7 @@ def open_youtube(query=""):
         webbrowser.open(url)
         return f"Opening YouTube and searching for {query}."
     webbrowser.open("https://www.youtube.com")
-    return "Opening YouTube, master."
+    return "Opening YouTube, Anointed."
 
 def search_google(query):
     """Searches Google for a query."""
@@ -74,7 +74,7 @@ def read_notes():
     if os.path.exists(notes_file):
         with open(notes_file, "r", encoding="utf-8") as f:
             content = f.read().strip()
-        return content if content else "Your notes file is empty, master."
+        return content if content else "Your notes file is empty, Anointed."
     return "No notes file found. You haven't saved any notes yet."
 
 def list_desktop_files():
@@ -119,7 +119,7 @@ def get_clipboard():
 def open_spotify():
     """Launches the Spotify desktop application."""
     os.system("start spotify")
-    return "Launching Spotify, master."
+    return "Launching Spotify, Anointed."
 
 def media_control(action):
     """Controls media playback using keyboard shortcuts."""
@@ -159,14 +159,14 @@ def start_pomodoro(minutes=25):
 
     def pomodoro_thread():
         time.sleep(seconds)
-        speak(f"Master, your {minutes}-minute Pomodoro session is complete. Time for a short break.")
+        speak(f"Anointed, your {minutes}-minute Pomodoro session is complete. Time for a short break.")
         for _ in range(4):
             winsound.Beep(880, 400)
             time.sleep(0.3)
 
     t = threading.Thread(target=pomodoro_thread, daemon=True)
     t.start()
-    return f"Pomodoro timer started. I'll alert you in {minutes} minutes, master. Stay focused."
+    return f"Pomodoro timer started. I'll alert you in {minutes} minutes, Anointed. Stay focused."
 
 def add_todo(item):
     """Appends an item to the to-do list file."""

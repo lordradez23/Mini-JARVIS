@@ -52,7 +52,7 @@ def listen():
     Runs a background thread waiting for voice input while polling
     for HUD input simultaneously.
     """
-    report_state("listening", "Awaiting your command, master...")
+    report_state("listening", "Awaiting your command, Anointed...")
     print("\n" + "─" * 50)
     print("  🎤  LISTENING (Speak now, or use the HUD browser) ...")
     print("─" * 50)
@@ -90,7 +90,7 @@ def listen():
             if _hud_input_queue:
                 query = _hud_input_queue.pop(0)
                 done.set()
-                print(f"\n  [HUD Input] Master typed: {query}")
+                print(f"\n  [HUD Input] Anointed typed: {query}")
                 report_state("recognizing", f"Processing: {query}")
                 return query.lower()
         done.wait(timeout=0.1)
@@ -101,7 +101,7 @@ def listen():
         report_state("idle", "No input received.")
         return "none"
 
-    print(f"\n  Master said: {query}")
+    print(f"\n  Anointed said: {query}")
     report_state("recognizing", f"Processing: {query}")
     return query.lower()
 

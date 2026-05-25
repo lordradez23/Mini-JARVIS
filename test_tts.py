@@ -10,7 +10,7 @@ def test_tts():
         voices = engine.getProperty('voices')
         print(f"Number of voices found: {len(voices)}")
         
-        text = "Hello master, this is a test of the emergency broadcast system."
+        text = "Hello Anointed, this is a test of the emergency broadcast system."
         print(f"Saying: {text}")
         engine.say(text)
         print("Waiting for completion...")

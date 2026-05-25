@@ -16,7 +16,7 @@ def get_countdown(target_date_str):
         now = datetime.datetime.now()
         diff = target - now
         if diff.days < 0:
-            return "That date has already passed, master."
+            return "That date has already passed, Anointed."
         return f"There are {diff.days} days remaining until {target_date_str}."
     except:
         return "I couldn't calculate that. Please use YYYY-MM-DD format."
@@ -26,7 +26,7 @@ def save_note(text):
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     with open("notes.txt", "a") as f:
         f.write(f"[{timestamp}] {text}\n")
-    return "I've saved that note for you, master."
+    return "I've saved that note for you, Anointed."
 
 def get_news():
     """Fetches top news headlines."""
