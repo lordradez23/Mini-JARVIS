@@ -1,7 +1,12 @@
+import logging
 from flask import Flask, render_template, jsonify, request
 import threading
 
 app = Flask(__name__)
+
+# Suppress Werkzeug logs to keep terminal clear of traffic
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 # Global state to share with the frontend
 jarvis_state = {
