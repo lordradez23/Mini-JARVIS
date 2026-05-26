@@ -51,6 +51,9 @@ def run_server():
     app.run(port=5000, debug=False, use_reloader=False)
 
 def start_hud():
+    print("\n" + "─"*50)
+    print("🌐 HUD Browser accessible at: http://127.0.0.1:5000")
+    print("─"*50 + "\n")
     hud_thread = threading.Thread(target=run_server, daemon=True)
     hud_thread.start()
     return hud_thread

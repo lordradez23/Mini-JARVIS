@@ -1,4 +1,5 @@
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 from dotenv import load_dotenv
 import os
 import re
@@ -30,19 +31,18 @@ if GEMINI_API_KEY:
     print("DEBUG: Initializing Neural Link with provided API Key.")
     
     try:
-        genai.configure(api_key=GEMINI_API_KEY)
-        # Using a supported model from the validated list
-        model = genai.GenerativeModel('gemini-2.0-flash', system_instruction=JARVIS_SYSTEM_PROMPT)
-        chat = model.start_chat(history=[])
+        client = genai.Client(api_key=GEMINI_API_KEY)
+        config = types.GenerateContentConfig(system_instruction=JARVIS_SYSTEM_PROMPT)
+        chat = client.chats.create(model='gemini-2.0-flash', config=config)
         print("DEBUG: Neural Link established successfully.")
     except Exception as e:
         print(f"CRITICAL ERROR: Neural Link Initialization Failed: {e}")
         chat = None
-        model = None
+        client = None
 else:
     print("WARNING: No GEMINI_API_KEY found in environment. Operating in local-only mode.")
     chat = None
-    model = None
+    client = None
 
 def _local_classify(query):
     """
@@ -208,7 +208,7 @@ def classify_intent(query):
         print(f"DEBUG: Local pre-classifier resolved intent: {local}")
         return local
 
-    if not model:
+    if not client:
         return {"intent": "CONVERSATION"}
 
     prompt = f"""
@@ -243,7 +243,10 @@ def classify_intent(query):
     """
 
     try:
-        classification_response = model.generate_content(prompt)
+        classification_response = client.models.generate_content(
+            model='gemini-2.0-flash',
+            contents=prompt
+        )
         import json
         import re
         match = re.search(r'\{.*\}', classification_response.text, re.DOTALL)
